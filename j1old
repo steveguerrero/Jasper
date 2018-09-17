@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="IS_angebot" language="groovy" pageWidth="650" pageHeight="842" columnWidth="560" leftMargin="70" rightMargin="20" topMargin="42" bottomMargin="0" resourceBundle="APplusReportTexts">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="scriptletTimer" class="com.apag.p2plus.p2reports.scriptlets.UtilityTimer" isForPrompting="false"/>
+	<parameter name="docId" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="apqe">
+		<![CDATA[select
+kundennummer = (select top 1  firma from adresse f   where f.adresse = an.adresse),
+frachtkosten = isnull((select netto from artikelkunde  where firma = (select firma from adresse where adresse = isnull(an.lieferadr,an.adresse)) 							 	   and gueltigbis >= getdate() and artikel = '999000'),-1),
+an.freitext,
+reisekostenadresse = (select a.plz from adresse a where a.adresse = isnull(an.lieferadr,an.adresse)) +' '+  (select a.ort from adresse a where a.adresse = isnull(an.lieferadr,an.adresse))+', '+ (select a.land from adresse a where a.adresse = an.adresse),
+an.angebot,
+an.stdtxt,
+an.sprache,
+an.datum,
+an.waehrung,
+an.gueltig,
+an.personal,
+an.adresse,
+per.initialen
+
+
+from angebot an
+join personal per on per.personal = an.personal
+where an.id =  $P{docId}]]>
+	</queryString>
+	<field name="kundennummer" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="frachtkosten" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="freitext" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="reisekostenadresse" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="angebot" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="stdtxt" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="sprache" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="datum" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="waehrung" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="gueltig" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="personal" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="adresse" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="initialen" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band height="802" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText" x="0" y="58" width="307" height="15" forecolor="#92082F" backcolor="#FFFFFF">
+					<printWhenExpression><![CDATA[new Boolean( $V{PAGE_NUMBER}.equals( new Integer(1) ) )]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="8" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[IngerSon IT Consulting GmbH • 40593 Düsseldorf]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="4" y="-802" width="78" height="21"/>
+				<textElement/>
+				<text><![CDATA[Statischer Text]]></text>
+			</staticText>
+			<line>
+				<reportElement key="line-1" x="4" y="-522" width="33" height="1"/>
+			</line>
+			<frame>
+				<reportElement key="frame" x="385" y="58" width="137" height="152">
+					<printWhenExpression><![CDATA[new Boolean( $V{PAGE_NUMBER}.equals( new Integer(1) ) )]]></printWhenExpression>
+				</reportElement>
+				<staticText>
+					<reportElement key="staticText" x="0" y="0" width="137" height="151"/>
+					<textElement>
+						<font fontName="SansSerif" size="7"/>
+					</textElement>
+					<text><![CDATA[IngerSon IT Consulting GmbH
+
+Anschrift:
+Schwarzer Weg 100-107
+40593 Düsseldorf
+
+Tel.:    (+49) 211-70071-10
+Fax:    (+49) 211-70071-19
+
+Mail:    info@ingerson.de
+Web:   www.ingerson.de
+]]></text>
+				</staticText>
+			</frame>
+			<image scaleImage="RealSize">
+				<reportElement key="image-1" x="385" y="-14" width="166" height="61">
+					<printWhenExpression><![CDATA[new Boolean( $V{PAGE_NUMBER}.equals( new Integer(1) ) )]]></printWhenExpression>
+				</reportElement>
+				<imageExpression class="java.lang.String"><![CDATA["/shared/images/ingersonlogo.jpg"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement key="line-2" x="-45" y="260" width="10" height="1"/>
+			</line>
+			<line>
+				<reportElement key="line-3" x="-45" y="560" width="10" height="1"/>
+			</line>
+		</band>
+	</background>
+	<title>
+		<band height="250" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport" x="0" y="90" width="371" height="60" isRemoveLineWhenBlank="true"/>
+				<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+				<subreportParameter name="DocNrAddress">
+					<subreportParameterExpression><![CDATA[$F{adresse}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["/shared/subreports/documents/IS_Address_sub.jasper"]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="4" y="220" width="69" height="20" forecolor="#92082F"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["ANGEBOT:"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="73" y="220" width="170" height="20" forecolor="#92082F"/>
+				<textElement>
+					<font fontName="SansSerif" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{angebot}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement key="frame" x="272" y="220" width="288" height="30"/>
+				<staticText>
+					<reportElement key="staticText" x="0" y="0" width="79" height="15" forecolor="#999999"/>
+					<textElement markup="none"/>
+					<text><![CDATA[Datum]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText" x="78" y="0" width="79" height="15" forecolor="#999999"/>
+					<textElement markup="none"/>
+					<text><![CDATA[Gültig bis]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText" x="156" y="0" width="79" height="15" forecolor="#999999"/>
+					<textElement markup="none"/>
+					<text><![CDATA[Kundennummer]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="staticText" x="234" y="0" width="50" height="15" forecolor="#999999"/>
+					<textElement markup="none"/>
+					<text><![CDATA[Bearbeiter]]></text>
+				</staticText>
+				<textField pattern="dd.MM.yyyy" isBlankWhenNull="true">
+					<reportElement key="textField" x="0" y="14" width="79" height="15" forecolor="#999999"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression class="java.util.Date"><![CDATA[$F{datum}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd.MM.yyyy" isBlankWhenNull="false">
+					<reportElement key="textField" x="78" y="14" width="78" height="15" forecolor="#999999"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression class="java.util.Date"><![CDATA[$F{gueltig}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement key="textField" x="156" y="14" width="78" height="15" forecolor="#999999"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{kundennummer}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField" x="234" y="14" width="49" height="15" forecolor="#999999"/>
+					<textElement textAlignment="Left"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[$F{initialen}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<subreport isUsingCache="true">
+				<reportElement key="subreport-1" x="0" y="0" width="558" height="50" isRemoveLineWhenBlank="true"/>
+				<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+				<subreportParameter name="id">
+					<subreportParameterExpression><![CDATA[$P{docId}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="waehrung">
+					<subreportParameterExpression><![CDATA[$F{waehrung}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA["IS_angebotPos_sub.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="162">
+			<frame>
+				<reportElement x="0" y="0" width="558" height="162" isRemoveLineWhenBlank="true"/>
+				<box>
+					<pen lineColor="#3333FF"/>
+				</box>
+				<staticText>
+					<reportElement key="staticText-3" positionType="Float" x="0" y="57" width="331" height="15"/>
+					<textElement>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Reisekosten ab Düsseldorf]]></text>
+				</staticText>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="0" y="82" width="287" height="15"/>
+					<textElement markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Kilometergeld je km:"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="0" y="96" width="287" height="15"/>
+					<textElement markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Sonstige Reisekosten (Bahn, Flugzeug, etc.)"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="0" y="110" width="287" height="15"/>
+					<textElement markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Übernachtungskosten"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="0" y="124" width="287" height="15"/>
+					<textElement markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Reisezeit / pro Stunde"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="0" y="138" width="287" height="15"/>
+					<textElement markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["Pauschalanreise nach " + $F{reisekostenadresse}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement key="staticText-3" x="0" y="1" width="136" height="15"/>
+					<textElement>
+						<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Zahlungsbedingungen]]></text>
+				</staticText>
+				<subreport isUsingCache="true">
+					<reportElement key="stdtxt" positionType="Float" x="1" y="18" width="556" height="20" isRemoveLineWhenBlank="true">
+						<printWhenExpression><![CDATA[new Boolean($F{stdtxt}!=null && $F{stdtxt}!="")]]></printWhenExpression>
+					</reportElement>
+					<parametersMapExpression><![CDATA[$P{REPORT_PARAMETERS_MAP}]]></parametersMapExpression>
+					<subreportParameter name="stdtxt">
+						<subreportParameterExpression><![CDATA[$F{stdtxt}]]></subreportParameterExpression>
+					</subreportParameter>
+					<subreportParameter name="sprache">
+						<subreportParameterExpression><![CDATA[$F{sprache}]]></subreportParameterExpression>
+					</subreportParameter>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression class="java.lang.String"><![CDATA["/shared/subreports/documents/StandardText_ZB_sub.jasper"]]></subreportExpression>
+				</subreport>
+				<textField pattern="###0.00;-###0.00" isBlankWhenNull="false">
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="397" y="138" width="151" height="15">
+						<printWhenExpression><![CDATA[$F{frachtkosten}.intValue() >= 0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{frachtkosten}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement positionType="Float" x="545" y="138" width="13" height="14">
+						<printWhenExpression><![CDATA[new Boolean($F{frachtkosten}.intValue() >= 0)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right"/>
+					<textFieldExpression class="java.lang.String"><![CDATA[" €"]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="false">
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="400" y="138" width="158" height="15" isRemoveLineWhenBlank="true">
+						<printWhenExpression><![CDATA[$F{frachtkosten}.intValue() < 0]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Right" markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["nach Vereinbarung"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="476" y="82" width="82" height="15"/>
+					<textElement textAlignment="Right" markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="476" y="96" width="82" height="15"/>
+					<textElement textAlignment="Right" markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["nach Beleg"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="476" y="124" width="82" height="15"/>
+					<textElement textAlignment="Right" markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["-"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement key="staticText-3" positionType="Float" isPrintRepeatedValues="false" x="476" y="110" width="82" height="15"/>
+					<textElement textAlignment="Right" markup="none">
+						<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<textFieldExpression class="java.lang.String"><![CDATA["nach Beleg"]]></textFieldExpression>
+				</textField>
+				<break>
+					<reportElement x="0" y="0" width="100" height="1"/>
+				</break>
+			</frame>
+		</band>
+		<band height="15">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" positionType="Float" x="0" y="0" width="560" height="15" isRemoveLineWhenBlank="true"/>
+				<box>
+					<rightPen lineWidth="0.0" lineColor="#BF5140"/>
+				</box>
+				<textElement markup="html">
+					<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[new com.apag.p2plus.p2reports.scriptlets.APScriptlets().filterHTML($F{freitext})]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="70">
+			<textField isStretchWithOverflow="true">
+				<reportElement key="staticText-3" positionType="Float" x="0" y="0" width="560" height="35"/>
+				<textElement markup="none">
+					<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Über den Rahmen dieses Angebotes hinausgehende Leistungen, Hardware und Dienstleistungen, werden von uns bei Bedarf gesondert angeboten und abgerechnet."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement key="staticText-3" positionType="Float" x="0" y="35" width="560" height="15"/>
+				<textElement markup="none">
+					<font size="9" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Alle genannten Preise verstehen sich zzgl. der am Tage der Lieferung gültigen gesetzlichen Mehrwertsteuer."]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement key="staticText-3" x="-69" y="17" width="648" height="43"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[IngerSon IT Consulting GmbH
+HRB: Düsseldorf 52493 – Steuer Nr. 106/5713/2509 – Ust-Id Nr: DE814481151
+Deutsche Bank Privat- und Geschäftskunden AG  (BLZ 30070024) Konto 497407700
+IBAN: DE33 3007 0024 0497 4077 00  –  BIC: DEUTDEDBDUE
+Geschäftsführer: Mirco Inger, André Scheiberle, Dr. Robert Schmidt – Sitz der Gesellschaft : Düsseldorf
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="4" y="0" width="52" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Seite "+$V{PAGE_NUMBER}+" von"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="56" y="0" width="40" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
